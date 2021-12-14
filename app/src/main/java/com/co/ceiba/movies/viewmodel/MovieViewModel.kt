@@ -3,7 +3,7 @@ package com.co.ceiba.movies.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.co.ceiba.domain.models.Movie
-import com.co.ceiba.domain.services.GetMovie
+import com.co.ceiba.domain.services.MovieService
 import com.co.ceiba.infrastructure.dependencyInjection.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieViewModel @Inject constructor(
-    private val getMovie: GetMovie,
+    private val movieService: MovieService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -42,10 +42,9 @@ class MovieViewModel @Inject constructor(
     }
 
     fun getMovie (id:Int){
-        println("OBTENIENDO MOVIE "+id)
         viewModelScope.launch(ioDispatcher) {
             loading.value = true
-            getMovie.invoke(id).collect { movies ->
+            movieService.invoke(id).collect { movies ->
                 success.value = movies
                 loading.value = false
             }

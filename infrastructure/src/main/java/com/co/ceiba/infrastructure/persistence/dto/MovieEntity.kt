@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.co.ceiba.domain.models.Movie
 
 @Entity
-data class MovieDto(
+data class MovieEntity(
     val adult: Boolean,
     val backdrop_path: String,
     val genre_ids: String,
@@ -21,7 +21,6 @@ data class MovieDto(
     val vote_average: Double,
     val vote_count: Int
 ){
-
     constructor(movie: Movie): this(
         adult = movie.adult,
         backdrop_path = movie.backdrop_path,
@@ -38,24 +37,4 @@ data class MovieDto(
         vote_average = movie.vote_average,
         vote_count = movie.vote_count
     )
-
-    fun map(): Movie {
-        return Movie(
-            adult,
-            backdrop_path,
-            genre_ids,
-            id,
-            original_language,
-            original_title,
-            overview,
-            popularity,
-            poster_path,
-            release_date,
-            title,
-            video,
-            vote_average,
-            vote_count
-        )
-    }
-
 }

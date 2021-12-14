@@ -1,9 +1,9 @@
-package com.co.ceiba.domain.sources
+package com.co.ceiba.domain.repositories
 
 import com.co.ceiba.domain.models.Movie
 import kotlinx.coroutines.flow.Flow
 
-interface ILocalSource {
+interface MovieLocalRepository {
     fun isEmpty (): Boolean
     fun movieExist(id: Int): Boolean
     fun getAllMovies () : Flow<List<Movie>>

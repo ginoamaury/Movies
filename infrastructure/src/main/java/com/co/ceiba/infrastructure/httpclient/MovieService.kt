@@ -1,7 +1,7 @@
 package com.co.ceiba.infrastructure.httpclient
 
-import com.co.ceiba.infrastructure.httpclient.model.MovieNetwork
-import com.co.ceiba.infrastructure.httpclient.model.MoviesNetwork
+import com.co.ceiba.infrastructure.httpclient.model.MovieDto
+import com.co.ceiba.infrastructure.httpclient.model.MoviesDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -16,12 +16,12 @@ interface IMovieService {
     @GET(QUERY_MOVIES)
     suspend fun getAllMovies(
         @Query(QUERY_API_KEY) apiKey: String = API_KEY
-    ) : MoviesNetwork
+    ) : MoviesDto
 
     @GET(QUERY_MOVIE)
     suspend fun getMovie(
         @Path(QUERY_MOVIE_ID)id:Int,
         @Query(QUERY_API_KEY) apiKey :String = API_KEY
-    ) : MovieNetwork
+    ) : MovieDto
 
 }

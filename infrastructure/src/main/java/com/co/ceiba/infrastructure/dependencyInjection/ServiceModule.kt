@@ -1,10 +1,8 @@
 package com.co.ceiba.infrastructure.dependencyInjection
 
-import com.co.ceiba.domain.repositories.IMovieRepository
-import com.co.ceiba.domain.services.GetMovie
-import com.co.ceiba.domain.services.GetMovies
-import com.co.ceiba.domain.services.SaveMovies
-import com.co.ceiba.infrastructure.repositories.MovieRepository
+import com.co.ceiba.domain.repositories.MovieRepository
+import com.co.ceiba.domain.services.MovieService
+import com.co.ceiba.domain.services.MoviesService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,12 +13,9 @@ import dagger.hilt.components.SingletonComponent
 class ServiceModule {
 
     @Provides
-    fun getMovies (movieRepository: IMovieRepository) : GetMovies = GetMovies(movieRepository)
+    fun getMovies (movieRepository: MovieRepository) : MoviesService = MoviesService(movieRepository)
 
     @Provides
-    fun getMovie (movieRepository: IMovieRepository) : GetMovie = GetMovie(movieRepository)
-
-    @Provides
-    fun saveMovies (movieRepository: IMovieRepository) : SaveMovies = SaveMovies(movieRepository)
+    fun getMovie (movieRepository: MovieRepository) : MovieService = MovieService(movieRepository)
 
 }

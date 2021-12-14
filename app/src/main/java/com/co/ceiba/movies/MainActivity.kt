@@ -5,12 +5,27 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -24,12 +39,13 @@ import com.co.ceiba.movies.ui.theme.MoviesTheme
 import com.co.ceiba.movies.ui.view.*
 import com.co.ceiba.movies.viewmodel.MovieUiState
 import com.co.ceiba.movies.viewmodel.MovieViewModel
+import com.google.accompanist.coil.rememberCoilPainter
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -59,7 +75,6 @@ fun DefaultPreview() {
     }
 }
 
-@ExperimentalFoundationApi
 @Composable
 fun Navigation (){
     val navController = rememberNavController()
@@ -80,35 +95,6 @@ fun Navigation (){
                 it.arguments?.getInt("movieId")
             }
             DescriptionScreen(navController = navController, idMovie = movieId )
-        }
-    }
-}
-
-@Composable
-fun DescriptionScreen (navController: NavController, idMovie: Int?, movieViewModel: MovieViewModel = hiltViewModel()){
-    movieViewModel.getMovie(idMovie?:0)
-    val uiState by movieViewModel.uiState.collectAsState()
-    Surface(Modifier.fillMaxSize()) {
-        ShowInfoMovie(loading = uiState.loading , movie = uiState.success , error = uiState.error, navController = navController)
-    }
-}
-
-@Composable
-fun ShowInfoMovie(movie :Movie?,navController: NavController, loading: Boolean, error: Boolean){
-    Log.d("PASS","ENTRO 0")
-    if(loading){
-        //TODO
-    }else{
-        if(error){
-            //TODO
-        }else{
-            Log.d("PASS","ENTRO A MOSTRAR TITULO 1")
-            if(movie != null){
-                Box {
-                    Log.d("PASS","ENTRO A MOSTRAR TITULO 2 ${movie.title}")
-                    Text("HOLI ${movie.title}")
-                }
-            }
         }
     }
 }

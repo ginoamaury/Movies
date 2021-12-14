@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,22 +35,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.delay
 import com.co.ceiba.movies.R
 
-@ExperimentalFoundationApi
 @Composable
 fun MainScreen(navController: NavController, viewModel: MoviesViewModel = hiltViewModel()){
     val uiState by viewModel.uiState.collectAsState()
     Surface(Modifier.fillMaxSize()) {
-        Log.d("PASS","INTENTO ACTUALIZAR")
         HomeContent(loading = uiState.loading , movies = uiState.success , error = uiState.error, navController = navController)
-    }
-    if(uiState.success.isNotEmpty()){
-        Log.d("PASS","ENTRO A GUARDAR")
-        viewModel.insertMovies(uiState.success)
     }
 }
 
 
-@ExperimentalFoundationApi
 @Composable
 fun HomeContent(movies :List<Movie>,navController: NavController, loading: Boolean, error: Boolean) {
     Column {
@@ -82,7 +76,6 @@ fun HomeContent(movies :List<Movie>,navController: NavController, loading: Boole
             )
 
             if(loading){
-                //LoadingMovies()
                 MovieListPreview()
             }else{
                 if(error){
@@ -199,15 +192,14 @@ fun MovieCard(
 }
 
 
-@ExperimentalFoundationApi
 @Composable
 fun MovieList(
     movies: List<Movie>,
     navController: NavController
 ) {
-    LazyVerticalGrid (
-        cells = GridCells.Fixed(3),
-        contentPadding = PaddingValues(8.dp)
+    LazyColumn (
+        contentPadding = PaddingValues(0.dp),
+        verticalArrangement = Arrangement.Center
     ){
         itemsIndexed(movies){
                 movie, item -> MovieCard(movie = item, navController = navController)

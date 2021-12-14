@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -16,12 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 
-@ExperimentalFoundationApi
+
 @Composable
 fun MovieListPreview() {
-    LazyVerticalGrid (
-        cells = GridCells.Fixed(3),
-        contentPadding = PaddingValues(8.dp)
+    LazyColumn (
+        contentPadding = PaddingValues(0.dp),
+        verticalArrangement = Arrangement.Center
     ){
         items(10){
             MovieCardPreview()
