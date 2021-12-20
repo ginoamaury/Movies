@@ -16,19 +16,17 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.movies.R
+import com.co.ceiba.movies.ui.movie.MovieAboutSection
+import com.co.ceiba.movies.ui.movie.MovieTitleSection
+import com.co.ceiba.movies.ui.movie.MovieVoteSection
 import com.co.ceiba.movies.viewmodel.MovieViewModel
 import com.google.accompanist.coil.rememberCoilPainter
-import java.util.*
 
 
 @Composable
@@ -98,7 +96,9 @@ fun MovieDetailScreen(
                     ),
                     contentDescription = movie.overview,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(movieImageSize).offset(y= topPadding),
+                    modifier = Modifier
+                        .size(movieImageSize)
+                        .offset(y = topPadding),
                 )
             }
         }
@@ -168,30 +168,6 @@ fun MovieDetailStateWrapper(
 }
 
 @Composable
-fun MovieAboutSection(
-    movie: Movie,
-    modifier: Modifier = Modifier
-){
-    Column(
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier
-    ) {
-        Text(
-            text = "Resume",
-            color = MaterialTheme.colors.onSurface,
-            textAlign = TextAlign.Left
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "${movie.overview}",
-            color = MaterialTheme.colors.onSurface,
-            fontSize = 12.sp,
-            textAlign = TextAlign.Justify
-        )
-    }
-}
-
-@Composable
 fun MovieDetailSection(
     movieInfo: Movie,
     modifier: Modifier = Modifier
@@ -204,61 +180,12 @@ fun MovieDetailSection(
             .offset(y = 100.dp)
             .verticalScroll(scrollState)
     ) {
-        Text(
-            text = "${movieInfo.title.capitalize(Locale.ROOT)}",
-            fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.onSurface
-        )
-        Text(
-            text = "Release date ${movieInfo.release_date.capitalize(Locale.ROOT)}",
-            fontWeight = FontWeight.Bold,
-            fontSize = 15.sp,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.secondary
-        )
+        MovieTitleSection(movieInfo = movieInfo)
         Spacer(modifier = Modifier.height(8.dp))
         MovieVoteSection(movie = movieInfo)
         Spacer(modifier = Modifier.height(8.dp))
         MovieAboutSection(movie = movieInfo)
-
-
     }
 }
 
-@Composable
-fun MovieVoteSection(
-    movie: Movie,
-    modifier: Modifier = Modifier
-) {
 
-    Row(
-        modifier = modifier
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.star),
-            modifier = modifier.size(15.dp),
-            tint = MaterialTheme.colors.secondary,
-            contentDescription = null)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = "Vote Average: ${movie.vote_average}",
-            color = MaterialTheme.colors.onSurface,
-            fontSize = 12.sp,
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Icon(
-            painter = painterResource(id = R.drawable.voting),
-            modifier = modifier.size(15.dp),
-            tint = MaterialTheme.colors.secondary,
-            contentDescription = null)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = "Total Votes: ${movie.vote_count}",
-            color = MaterialTheme.colors.onSurface,
-            fontSize = 12.sp,
-        )
-    }
-
-}

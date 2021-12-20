@@ -1,16 +1,18 @@
 package com.co.ceiba.infrastructure.dependencyInjection
 
+import android.app.Application
 import android.content.SharedPreferences
 import com.co.ceiba.domain.repositories.MovieRepository
 import com.co.ceiba.domain.repositories.MovieLocalRepository
-import com.co.ceiba.domain.repositories.MoviePreferencesRepository
+import com.co.ceiba.domain.repositories.MovieTemporalRepository
 import com.co.ceiba.domain.repositories.MovieRemoteRepository
 import com.co.ceiba.infrastructure.httpclient.IMovieService
-import com.co.ceiba.infrastructure.repositories.MoviesRemoteRepositoryImpl
-import com.co.ceiba.infrastructure.repositories.MoviesLocalRepositoryImpl
-import com.co.ceiba.infrastructure.persistence.dao.MovieDao
-import com.co.ceiba.infrastructure.repositories.MoviePreferencesRepositoryImpl
-import com.co.ceiba.infrastructure.repositories.MovieRepositoryImpl
+import com.co.ceiba.infrastructure.movie.persistence.dao.MovieDao
+import com.co.ceiba.infrastructure.movie.repositories.MoviesRetrofitRepository
+import com.co.ceiba.infrastructure.movie.repositories.MoviesRoomRepository
+import com.co.ceiba.infrastructure.movie.repositories.MovieSharedPreferencesRepository
+import com.co.ceiba.infrastructure.movie.repositories.MovieRepositoryImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,19 +26,19 @@ class DataModule {
     fun providesRepository(
         localRepository: MovieLocalRepository,
         remoteRepository: MovieRemoteRepository,
-        preferencesRepository: MoviePreferencesRepository
+        temporalRepository: MovieTemporalRepository
     ): MovieRepository =
-        MovieRepositoryImpl(localRepository, remoteRepository, preferencesRepository)
+        MovieRepositoryImpl(localRepository, remoteRepository, temporalRepository)
 
     @Provides
     fun providesLocalSource(movieDao: MovieDao): MovieLocalRepository =
-        MoviesLocalRepositoryImpl(movieDao)
+        MoviesRoomRepository(movieDao)
 
     @Provides
     fun providesRemoteSource(moviesService: IMovieService): MovieRemoteRepository =
-        MoviesRemoteRepositoryImpl(moviesService)
+        MoviesRetrofitRepository(moviesService)
 
     @Provides
-    fun providesPreferencesRepository(sharedPreferences: SharedPreferences): MoviePreferencesRepository = MoviePreferencesRepositoryImpl(sharedPreferences)
+    fun providesPreferencesRepository(sharedPreferences: SharedPreferences): MovieTemporalRepository = MovieSharedPreferencesRepository(sharedPreferences)
 
 }

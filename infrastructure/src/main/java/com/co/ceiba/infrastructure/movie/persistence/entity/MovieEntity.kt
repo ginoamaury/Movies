@@ -1,4 +1,4 @@
-package com.co.ceiba.infrastructure.persistence.dto
+package com.co.ceiba.infrastructure.movie.persistence.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

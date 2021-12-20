@@ -1,11 +1,11 @@
-package com.co.ceiba.infrastructure.repositories
+package com.co.ceiba.infrastructure.movie.repositories
 
 import android.content.SharedPreferences
-import com.co.ceiba.domain.repositories.MoviePreferencesRepository
+import com.co.ceiba.domain.repositories.MovieTemporalRepository
 import com.co.ceiba.infrastructure.dependencyInjection.LAST_UPDATED
 
 
-class MoviePreferencesRepositoryImpl(private val sharedPreferences: SharedPreferences): MoviePreferencesRepository{
+class MovieSharedPreferencesRepository(private val sharedPreferences: SharedPreferences): MovieTemporalRepository{
 
     override fun getLastUpdatedPreference(): String = sharedPreferences.getString(LAST_UPDATED, "").toString()
 

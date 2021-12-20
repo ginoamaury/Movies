@@ -1,13 +1,13 @@
-package com.co.ceiba.infrastructure.repositories
+package com.co.ceiba.infrastructure.movie.repositories
 
 import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.domain.repositories.MovieLocalRepository
-import com.co.ceiba.infrastructure.anticorruption.MovieTranslate
-import com.co.ceiba.infrastructure.persistence.dao.MovieDao
-import com.co.ceiba.infrastructure.persistence.dto.MovieEntity
+import com.co.ceiba.infrastructure.movie.anticorruption.MovieTranslate
+import com.co.ceiba.infrastructure.movie.persistence.dao.MovieDao
+import com.co.ceiba.infrastructure.movie.persistence.entity.MovieEntity
 import kotlinx.coroutines.flow.*
 
-class MoviesLocalRepositoryImpl (private val movieDao: MovieDao) : MovieLocalRepository {
+class MoviesRoomRepository (private val movieDao: MovieDao) : MovieLocalRepository {
 
     override fun isEmpty(): Boolean {
         return getCountMovies() <=0

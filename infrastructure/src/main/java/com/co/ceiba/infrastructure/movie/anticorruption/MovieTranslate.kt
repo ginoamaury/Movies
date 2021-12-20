@@ -1,9 +1,9 @@
-package com.co.ceiba.infrastructure.anticorruption
+package com.co.ceiba.infrastructure.movie.anticorruption
 
 import com.co.ceiba.domain.models.Movie
-import com.co.ceiba.infrastructure.httpclient.model.MovieDto
-import com.co.ceiba.infrastructure.httpclient.model.MoviesDto
-import com.co.ceiba.infrastructure.persistence.dto.MovieEntity
+import com.co.ceiba.infrastructure.movie.httpclient.dto.MovieDto
+import com.co.ceiba.infrastructure.movie.httpclient.dto.MoviesDto
+import com.co.ceiba.infrastructure.movie.persistence.entity.MovieEntity
 
 class MovieTranslate {
 

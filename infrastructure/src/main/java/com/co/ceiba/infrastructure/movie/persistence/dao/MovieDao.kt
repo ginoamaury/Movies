@@ -1,7 +1,7 @@
-package com.co.ceiba.infrastructure.persistence.dao
+package com.co.ceiba.infrastructure.movie.persistence.dao
 
 import androidx.room.*
-import com.co.ceiba.infrastructure.persistence.dto.MovieEntity
+import com.co.ceiba.infrastructure.movie.persistence.entity.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

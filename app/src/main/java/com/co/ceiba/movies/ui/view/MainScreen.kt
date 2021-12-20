@@ -1,39 +1,29 @@
 package com.co.ceiba.movies.ui.view
 
-import android.util.Log
-import android.view.animation.OvershootInterpolator
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.co.ceiba.domain.models.Movie
-import com.co.ceiba.movies.viewmodel.MoviesUiState
 import com.co.ceiba.movies.viewmodel.MoviesViewModel
 import com.google.accompanist.coil.rememberCoilPainter
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.delay
 import com.co.ceiba.movies.R
+import com.co.ceiba.movies.ui.widget.HomeAppBar
 
 @Composable
 fun MainScreen(navController: NavController, viewModel: MoviesViewModel = hiltViewModel()){
@@ -89,48 +79,6 @@ fun HomeContent(movies :List<Movie>,navController: NavController, loading: Boole
 
 
     }
-}
-
-@Composable
-fun HomeAppBar(
-    backgroundColor: Color,
-    modifier: Modifier = Modifier
-) {
-    val scale = remember {
-        Animatable(0f)
-    }
-    LaunchedEffect(key1 = true){
-        scale.animateTo(
-            targetValue = 1f,
-            animationSpec = tween(
-                durationMillis = 2000,
-                easing = {
-                    OvershootInterpolator(2f).getInterpolation(it)
-                }
-            )
-        )
-        delay(3000L)
-    }
-    Box{
-        TopAppBar(
-            title = {
-                Row (verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(R.drawable.ceiba_logo),
-                        contentDescription = null,
-                        Modifier
-                            .padding(8.dp)
-                            .fillMaxSize()
-                            .scale(scale = scale.value),
-
-                        )
-                }
-            },
-            backgroundColor = backgroundColor,
-            modifier = modifier
-        )
-    }
-
 }
 
 @Composable
@@ -202,7 +150,7 @@ fun MovieList(
         verticalArrangement = Arrangement.Center
     ){
         itemsIndexed(movies){
-                movie, item -> MovieCard(movie = item, navController = navController)
+                _, item -> MovieCard(movie = item, navController = navController)
         }
     }
 }

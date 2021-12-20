@@ -51,17 +51,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             this.window.statusBarColor = ContextCompat.getColor(this,R.color.black)
             MoviesTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Navigation()
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
     }
 
 }

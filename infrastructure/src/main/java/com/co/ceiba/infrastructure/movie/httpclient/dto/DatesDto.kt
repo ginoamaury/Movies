@@ -1,4 +1,4 @@
-package com.co.ceiba.infrastructure.httpclient.model
+package com.co.ceiba.infrastructure.movie.httpclient.dto
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

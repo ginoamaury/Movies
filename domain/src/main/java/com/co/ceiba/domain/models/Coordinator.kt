@@ -13,6 +13,5 @@ class Coordinator {
                 false
             }
         }
-
     }
 }
