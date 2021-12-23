@@ -1,18 +1,13 @@
 package com.co.ceiba.infrastructure.dependencyInjection
 
-import android.app.Application
 import android.content.SharedPreferences
-import com.co.ceiba.domain.repositories.MovieRepository
+import com.co.ceiba.domain.repositories.MovieProxy
 import com.co.ceiba.domain.repositories.MovieLocalRepository
 import com.co.ceiba.domain.repositories.MovieTemporalRepository
 import com.co.ceiba.domain.repositories.MovieRemoteRepository
 import com.co.ceiba.infrastructure.httpclient.IMovieService
 import com.co.ceiba.infrastructure.movie.persistence.dao.MovieDao
-import com.co.ceiba.infrastructure.movie.repositories.MoviesRetrofitRepository
-import com.co.ceiba.infrastructure.movie.repositories.MoviesRoomRepository
-import com.co.ceiba.infrastructure.movie.repositories.MovieSharedPreferencesRepository
-import com.co.ceiba.infrastructure.movie.repositories.MovieRepositoryImpl
-import dagger.Binds
+import com.co.ceiba.infrastructure.movie.repositories.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,8 +22,8 @@ class DataModule {
         localRepository: MovieLocalRepository,
         remoteRepository: MovieRemoteRepository,
         temporalRepository: MovieTemporalRepository
-    ): MovieRepository =
-        MovieRepositoryImpl(localRepository, remoteRepository, temporalRepository)
+    ): MovieProxy =
+        MovieCachedProxy(localRepository, remoteRepository, temporalRepository)
 
     @Provides
     fun providesLocalSource(movieDao: MovieDao): MovieLocalRepository =

@@ -53,35 +53,39 @@ dependencies {
     implementation project(':domain')
     implementation project(':infrastructure')
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation ktx
+    implementation appcompat
+    implementation material
+
+    //Compose
+    implementation composeUi
+    implementation composeMaterial
+    implementation composeUiPreview
+    implementation navigationCompose
+    androidTestImplementation composeTest
+    debugImplementation composeDebug
+    debugImplementation composeTestManifest
+    implementation activityCompose
+
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
-    implementation 'androidx.activity:activity-compose:1.4.0'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-
-    implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
 
     //Dependency Injection
-    implementation "com.google.dagger:hilt-android:2.40.2"
-    kapt  "com.google.dagger:hilt-android-compiler:2.40.2"
-    kapt  "androidx.hilt:hilt-compiler:1.0.0"
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0-beta01"
+    api hiltDi
+    kapt hiltCompiler
+    kapt hiltCompilerViewModel
+    implementation hiltNavigationCompose
 
     //View Model
-    implementation  "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
-    implementation  "androidx.activity:activity-ktx:1.4.0"
-    implementation  "androidx.fragment:fragment-ktx:1.4.0"
+    implementation  viewModelKtx
+    implementation  activityKtx
+    implementation  fragmentKtx
 
     // Coil
-    implementation "io.coil-kt:coil:1.3.0"
-    implementation "com.google.accompanist:accompanist-coil:0.10.0"
+    implementation coil
+    implementation accompanist
 
 }

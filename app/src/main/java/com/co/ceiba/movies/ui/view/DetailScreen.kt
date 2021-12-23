@@ -151,7 +151,7 @@ fun MovieDetailStateWrapper(
         )
     } else {
         if (error) {
-            //TODO
+            NoDataScreen()
         } else {
             if (movie != null) {
 

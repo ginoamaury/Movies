@@ -1,6 +1,6 @@
 package com.co.ceiba.infrastructure.dependencyInjection
 
-import com.co.ceiba.domain.repositories.MovieRepository
+import com.co.ceiba.domain.repositories.MovieProxy
 import com.co.ceiba.domain.services.MovieService
 import com.co.ceiba.domain.services.MoviesService
 import dagger.Module
@@ -13,9 +13,9 @@ import dagger.hilt.components.SingletonComponent
 class ServiceModule {
 
     @Provides
-    fun getMovies (movieRepository: MovieRepository) : MoviesService = MoviesService(movieRepository)
+    fun getMovies (movieProxy: MovieProxy) : MoviesService = MoviesService(movieProxy)
 
     @Provides
-    fun getMovie (movieRepository: MovieRepository) : MovieService = MovieService(movieRepository)
+    fun getMovie (movieProxy: MovieProxy) : MovieService = MovieService(movieProxy)
 
 }

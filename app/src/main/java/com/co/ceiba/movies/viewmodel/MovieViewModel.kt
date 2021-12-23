@@ -2,6 +2,7 @@ package com.co.ceiba.movies.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.co.ceiba.domain.exceptions.NoDataMovie
 import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.domain.services.MovieService
 import com.co.ceiba.infrastructure.dependencyInjection.IoDispatcher
@@ -41,14 +42,18 @@ class MovieViewModel @Inject constructor(
         }
     }
 
-    fun getMovie (id:Int){
+    fun getMovie(id: Int) {
         viewModelScope.launch(ioDispatcher) {
             loading.value = true
-            movieService.invoke(id).collect { movies ->
-                success.value = movies
+            try {
+                movieService.invoke(id).collect { movies ->
+                    success.value = movies
+                    loading.value = false
+                }
+            } catch (e: Exception) {
                 loading.value = false
+                error.value = true
             }
-
         }
     }
 

@@ -4,52 +4,37 @@ import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.infrastructure.movie.httpclient.dto.MovieDto
 import com.co.ceiba.infrastructure.movie.httpclient.dto.MoviesDto
 import com.co.ceiba.infrastructure.movie.persistence.entity.MovieEntity
+import org.modelmapper.ModelMapper
+import org.modelmapper.config.Configuration
+import org.modelmapper.convention.MatchingStrategies
 
 class MovieTranslate {
-
     companion object{
         fun  mapMovieEntityToDomain (movieEntity: MovieEntity): Movie {
-            return Movie(
-                movieEntity.adult,
-                movieEntity.backdrop_path,
-                movieEntity.genre_ids,
-                movieEntity.id,
-                movieEntity.original_language,
-                movieEntity.original_title,
-                movieEntity.overview,
-                movieEntity.popularity,
-                movieEntity.poster_path,
-                movieEntity.release_date,
-                movieEntity.title,
-                movieEntity.video,
-                movieEntity.vote_average,
-                movieEntity.vote_count
-            )
+            return Mapper.convert(movieEntity)
         }
 
-        fun mapMovieDtoToDomain (movieDto: MovieDto): Movie{
-            return Movie(
-                movieDto.adult,
-                movieDto.backdrop_path,
-                movieDto.genre_ids.toString(),
-                movieDto.id,
-                movieDto.original_language,
-                movieDto.original_title,
-                movieDto.overview,
-                movieDto.popularity,
-                movieDto.poster_path,
-                movieDto.release_date,
-                movieDto.title,
-                movieDto.video,
-                movieDto.vote_average,
-                movieDto.vote_count
-            )
+        private fun mapMovieDtoToDomain (movieDto: MovieDto): Movie{
+           return Mapper.convert(movieDto)
         }
 
         fun mapMoviesDtoToDomain (moviesDto: MoviesDto): List<Movie> {
             return moviesDto.results.map { mapMovieDtoToDomain(it) }
         }
     }
+}
 
+class MapperDto() : ModelMapper() {
+    init {
+        configuration.matchingStrategy = MatchingStrategies.LOOSE
+        configuration.fieldAccessLevel = Configuration.AccessLevel.PRIVATE
+        configuration.isFieldMatchingEnabled = true
+        configuration.isSkipNullEnabled = true
+    }
+}
 
+object Mapper {
+    val mapper = MapperDto()
+
+    inline fun <S, reified T> convert(source: S): T = mapper.map(source, T::class.java)
 }

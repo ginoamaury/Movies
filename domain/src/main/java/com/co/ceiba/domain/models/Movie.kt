@@ -1,5 +1,8 @@
 package com.co.ceiba.domain.models
 
+import com.co.ceiba.domain.anotations.NoArg
+
+@NoArg
 class Movie(
     val adult: Boolean,
     val backdrop_path: String,

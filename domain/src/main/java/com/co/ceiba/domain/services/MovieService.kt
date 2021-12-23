@@ -1,7 +1,7 @@
 package com.co.ceiba.domain.services
 
-import com.co.ceiba.domain.repositories.MovieRepository
+import com.co.ceiba.domain.repositories.MovieProxy
 
-class MovieService (private val movieRepository: MovieRepository) {
-    operator fun invoke (id:Int) = movieRepository.getMovie(id)
+class MovieService (private val movieProxy: MovieProxy) {
+    operator fun invoke (id:Int) = movieProxy.getMovie(id)
 }

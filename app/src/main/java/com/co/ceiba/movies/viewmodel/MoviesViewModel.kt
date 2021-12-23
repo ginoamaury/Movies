@@ -2,9 +2,12 @@ package com.co.ceiba.movies.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.co.ceiba.domain.exceptions.NoDataMovie
 import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.domain.services.MoviesService
+import com.co.ceiba.infrastructure.dependencyInjection.DefaultDispatcher
 import com.co.ceiba.infrastructure.dependencyInjection.IoDispatcher
+import com.co.ceiba.infrastructure.dependencyInjection.MainDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
@@ -14,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
     private val moviesService: MoviesService,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @DefaultDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val loading = MutableStateFlow(false)
@@ -42,13 +45,18 @@ class MoviesViewModel @Inject constructor(
         getMovies()
     }
 
-    fun getMovies (){
+    private fun getMovies (){
         viewModelScope.launch(ioDispatcher) {
             loading.value = true
-            moviesService.invoke().collect { movies ->
-                success.value = movies
+            try{
+                moviesService.invoke().collect { movies ->
+                    success.value = movies
+                    loading.value = false
+                }
+            }catch (e: Exception){
                 loading.value = false
-            }
+                error.value = true
+            } 
 
         }
     }
