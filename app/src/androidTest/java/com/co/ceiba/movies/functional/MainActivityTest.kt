@@ -11,7 +11,9 @@ import com.co.ceiba.movies.MainActivity
 import com.co.ceiba.movies.MainPage
 import com.co.ceiba.movies.Navigation
 import com.co.ceiba.movies.ui.theme.MoviesTheme
-import org.junit.Before
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,9 +25,10 @@ class MainActivityTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<MainActivity>(MainActivity::class.java)
 
-
-    @Before
-    fun setUp() {
+    @ExperimentalTestApi
+    @Test
+    fun getAllMovies_whenAllIsRight_okResult() {
+        //Arrange
         val showSplashScreen = false
         composeTestRule.setContent {
             MoviesTheme {
@@ -34,13 +37,6 @@ class MainActivityTest {
                 }
             }
         }
-    }
-
-
-    @ExperimentalTestApi
-    @Test
-    fun getAllMovies_whenAllIsRight_okResult() {
-        //Arrange
         //Act
         val list = composeTestRule.onNode(hasTestTag(MainPage.movieList), useUnmergedTree = true)
         //Assert
@@ -51,7 +47,16 @@ class MainActivityTest {
     @ExperimentalTestApi
     @Test
     fun getAllMovies_andShowDetailScreen_okResult() {
+
         //Arrange
+        val showSplashScreen = false
+        composeTestRule.setContent {
+            MoviesTheme {
+                Surface(color = MaterialTheme.colors.background) {
+                    Navigation({}, showSplashScreen)
+                }
+            }
+        }
         //Act
         val list = composeTestRule.onNode(hasTestTag(MainPage.movieList), useUnmergedTree = true)
         //Assert
@@ -60,7 +65,6 @@ class MainActivityTest {
 
         composeTestRule.onNode(hasTestTag(MainPage.detailScreen), useUnmergedTree = true)
             .assertIsDisplayed()
+
     }
-
-
 }
