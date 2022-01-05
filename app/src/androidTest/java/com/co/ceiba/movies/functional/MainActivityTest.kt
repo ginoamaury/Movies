@@ -17,6 +17,8 @@ import kotlinx.coroutines.withContext
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.*
+import kotlin.concurrent.schedule
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -29,6 +31,7 @@ class MainActivityTest {
     @Test
     fun getAllMovies_whenAllIsRight_okResult() {
         //Arrange
+        val delay = 1000L
         val showSplashScreen = false
         composeTestRule.setContent {
             MoviesTheme {
@@ -37,11 +40,17 @@ class MainActivityTest {
                 }
             }
         }
+        AsyncTimer.start (delay)
+        composeTestRule.waitUntil (
+            condition = {AsyncTimer.expired},
+            timeoutMillis = delay + 1000
+        )
         //Act
         val list = composeTestRule.onNode(hasTestTag(MainPage.movieList), useUnmergedTree = true)
         //Assert
         list.assertIsDisplayed()
             .performScrollToIndex(2).performClick()
+
     }
 
     @ExperimentalTestApi
@@ -49,6 +58,7 @@ class MainActivityTest {
     fun getAllMovies_andShowDetailScreen_okResult() {
 
         //Arrange
+        val delay = 1000L
         val showSplashScreen = false
         composeTestRule.setContent {
             MoviesTheme {
@@ -57,14 +67,36 @@ class MainActivityTest {
                 }
             }
         }
+        AsyncTimer.start (delay)
+        composeTestRule.waitUntil (
+            condition = {AsyncTimer.expired},
+            timeoutMillis = delay + 1000
+        )
         //Act
         val list = composeTestRule.onNode(hasTestTag(MainPage.movieList), useUnmergedTree = true)
         //Assert
         list.assertIsDisplayed()
             .performScrollToIndex(2).performClick()
 
+        AsyncTimer.start (delay)
+        composeTestRule.waitUntil (
+            condition = {AsyncTimer.expired},
+            timeoutMillis = delay + 1000
+        )
+
         composeTestRule.onNode(hasTestTag(MainPage.detailScreen), useUnmergedTree = true)
             .assertIsDisplayed()
 
     }
+    object AsyncTimer {
+        var expired = false
+        fun start(delay: Long = 1000){
+            expired = false
+            Timer().schedule(delay) {
+                expired = true
+            }
+        }
+    }
+
+
 }
