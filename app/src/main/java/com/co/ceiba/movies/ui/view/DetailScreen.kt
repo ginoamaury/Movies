@@ -104,7 +104,7 @@ fun MovieDetailScreen(
             if (movie != null) {
                 Image(
                     painter = rememberCoilPainter(
-                        request = "https://image.tmdb.org/t/p/w500" + movie.backdrop_path,
+                        request = "https://image.tmdb.org/t/p/w500" + movie.backdropPath,
                         previewPlaceholder = R.drawable.tree_logo,
                     ),
                     contentDescription = movie.overview,

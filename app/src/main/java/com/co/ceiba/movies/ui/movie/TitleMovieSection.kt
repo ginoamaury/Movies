@@ -31,7 +31,7 @@ fun MovieTitleSection(movieInfo: Movie) {
             color = MaterialTheme.colors.onSurface
         )
         Text(
-            text = "Release date ${movieInfo.release_date.replaceFirstChar {
+            text = "Release date ${movieInfo.releaseDate.replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
                     Locale.ROOT
                 ) else it.toString()
@@ -61,7 +61,7 @@ fun MovieVoteSection(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "Vote Average: ${movie.vote_average}",
+            text = "Vote Average: ${movie.voteAverage}",
             color = MaterialTheme.colors.onSurface,
             fontSize = 12.sp,
         )
@@ -74,7 +74,7 @@ fun MovieVoteSection(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "Total Votes: ${movie.vote_count}",
+            text = "Total Votes: ${movie.voteCount}",
             color = MaterialTheme.colors.onSurface,
             fontSize = 12.sp,
         )

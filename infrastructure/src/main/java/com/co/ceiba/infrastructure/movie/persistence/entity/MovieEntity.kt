@@ -7,34 +7,34 @@ import com.co.ceiba.domain.models.Movie
 @Entity
 data class MovieEntity(
     val adult: Boolean,
-    val backdrop_path: String,
-    val genre_ids: String,
+    val backdropPath: String,
+    val genreIds: String,
     @PrimaryKey val id: Int,
-    val original_language: String,
-    val original_title: String,
+    val originalLanguage: String,
+    val originalTitle: String,
     val overview: String,
     val popularity: Double,
-    val poster_path: String,
-    val release_date: String,
+    val posterPath: String,
+    val releaseDate: String,
     val title: String,
     val video: Boolean,
-    val vote_average: Double,
-    val vote_count: Int
+    val voteAverage: Double,
+    val voteCount: Int
 ){
     constructor(movie: Movie): this(
         adult = movie.adult,
-        backdrop_path = movie.backdrop_path,
-        genre_ids = movie.genre_ids,
+        backdropPath = movie.backdropPath,
+        genreIds = movie.genreIds,
         id = movie.id,
-        original_language = movie.original_language,
-        original_title = movie.original_title,
+        originalLanguage = movie.originalLanguage,
+        originalTitle = movie.originalTitle,
         overview = movie.overview,
         popularity = movie.popularity,
-        poster_path = movie.poster_path,
-        release_date = movie.release_date,
+        posterPath = movie.posterPath,
+        releaseDate = movie.releaseDate,
         title = movie.title,
         video = movie.video,
-        vote_average = movie.vote_average,
-        vote_count = movie.vote_count
+        voteAverage = movie.voteAverage,
+        voteCount = movie.voteCount
     )
 }
