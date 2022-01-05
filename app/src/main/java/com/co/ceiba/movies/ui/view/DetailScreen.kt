@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.movies.R
 import com.co.ceiba.movies.ui.movie.MovieAboutSection
