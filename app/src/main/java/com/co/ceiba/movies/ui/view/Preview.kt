@@ -14,17 +14,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-
 
 
 @Composable
 fun MovieListPreview() {
-    LazyColumn (
+    LazyColumn(
+        modifier = Modifier.testTag("ListColumn"),
         contentPadding = PaddingValues(0.dp),
         verticalArrangement = Arrangement.Center
-    ){
-        items(10){
+    ) {
+        items(10) {
             MovieCardPreview()
         }
     }
@@ -35,35 +36,38 @@ fun MovieListPreview() {
 fun MovieCardPreview(
     modifier: Modifier = Modifier
 ) {
-
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(6.dp),
+            .padding(6.dp)
+            .testTag("cardPreview"),
         shape = RoundedCornerShape(15.dp),
         elevation = 5.dp,
     ) {
 
         Box(modifier = Modifier.height(200.dp)) {
 
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            Color.Black
-                        ),
-                        startY = 300f
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black
+                            ),
+                            startY = 300f
+                        )
                     )
-                )) {
+            ) {
 
 
             }
 
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(12.dp),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()

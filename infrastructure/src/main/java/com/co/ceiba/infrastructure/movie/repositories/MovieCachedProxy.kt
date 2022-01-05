@@ -1,21 +1,25 @@
 package com.co.ceiba.infrastructure.movie.repositories
 
-import com.co.ceiba.domain.exceptions.NoDataMovie
 import com.co.ceiba.domain.models.Coordinator
 import com.co.ceiba.domain.models.Movie
-import com.co.ceiba.domain.repositories.MovieProxy
 import com.co.ceiba.domain.repositories.MovieLocalRepository
-import com.co.ceiba.domain.repositories.MovieTemporalRepository
+import com.co.ceiba.domain.repositories.MovieProxy
 import com.co.ceiba.domain.repositories.MovieRemoteRepository
-import kotlinx.coroutines.flow.*
+import com.co.ceiba.domain.repositories.MovieTemporalRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import java.util.*
 
-class MovieCachedProxy (private val localRepository: MovieLocalRepository, private val remoteRepository: MovieRemoteRepository, private val temporalRepository: MovieTemporalRepository) :
+class MovieCachedProxy(
+    private val localRepository: MovieLocalRepository,
+    private val remoteRepository: MovieRemoteRepository,
+    private val temporalRepository: MovieTemporalRepository
+) :
     MovieProxy {
 
-    override fun getMovie(id:Int): Flow<Movie>  = localRepository.getMovieById(id)
+    override fun getMovie(id: Int): Flow<Movie> = localRepository.getMovieById(id)
 
-    override suspend fun getMovies (): Flow<List<Movie>> {
+    override suspend fun getMovies(): Flow<List<Movie>> {
         val sharedTime = temporalRepository.getLastUpdatedPreference()
         val isEmptyLocal = localRepository.isEmpty()
         return if (!isEmptyLocal && Coordinator.isUpdated(sharedTime)) {
@@ -29,10 +33,9 @@ class MovieCachedProxy (private val localRepository: MovieLocalRepository, priva
         }
     }
 
-    private suspend fun saveMovies(movies: List<Movie>){
+    private suspend fun saveMovies(movies: List<Movie>) {
         localRepository.insertMovies(movies)
         temporalRepository.saveLastUpdatedPreference(Calendar.getInstance().timeInMillis.toString())
     }
-
 
 }

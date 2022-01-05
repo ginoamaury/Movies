@@ -3,11 +3,12 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'jacoco'
 }
 
 android {
     compileSdk 31
-
+    testOptions.unitTests.includeAndroidResources = true
     defaultConfig {
         applicationId "com.co.ceiba.movies"
         minSdk 23
@@ -22,6 +23,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -35,6 +39,11 @@ android {
         jvmTarget = '1.8'
         useIR = true
     }
+    tasks.withType(Test) {
+        jacoco.includeNoLocationClasses = true
+        jacoco.excludes = ['jdk.internal.*']
+        finalizedBy(jacocoTestReport)
+    }
     buildFeatures {
         compose true
     }
@@ -47,6 +56,40 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+}
+
+
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['connectedAndroidTest','testDebugUnitTest',':domain:testDebugUnitTest',':infrastructure:testDebugUnitTest']) {
+
+    def domain = project(':domain')
+    def infrastructure = project(':infrastructure')
+
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+
+    def fileFilterInfrastructure = ['**/dependencyInjection/*','**/movie/httpclient/dto/*','**/movie/persistence/entity/*','**/movie/anticorruption/*']
+    def sourceDirectoriesFromApp = fileTree(dir: "${project.projectDir}/src/main/java")
+    def sourceDirectoriesFromInfrastructure = fileTree(dir: "${infrastructure.projectDir}/src/main/java", excludes: fileFilterInfrastructure)
+
+    def sourceDirectoriesFromAllModules = layout.files(sourceDirectoriesFromApp,"${domain.projectDir}/src/main/java",sourceDirectoriesFromInfrastructure)
+    sourceDirectories.setFrom(files([sourceDirectoriesFromAllModules]))
+
+
+    def classDirectoriesFromApp = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug")
+    def classDirectoriesFromInfrastructure = fileTree(dir: "${infrastructure.buildDir}/tmp/kotlin-classes/debug", excludes: fileFilterInfrastructure)
+    def classDirectoriesFromAllModules = layout.files(classDirectoriesFromApp,"${domain.buildDir}/tmp/kotlin-classes/debug",classDirectoriesFromInfrastructure)
+    classDirectories.setFrom(files([classDirectoriesFromAllModules]))
+
+
+
+    def executionFileFromUnitTestInApp = fileTree(dir: "$buildDir", includes: ["outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec","outputs/code_coverage/debugAndroidTest/connected/**coverage.ec"])
+    def executionFileFromUnitTestInDomain = fileTree(dir: "$domain.buildDir", includes: ["jacoco/testDebugUnitTest.exec"])
+    def executionFileFromUnitTestInInfrastructure = fileTree(dir: "$infrastructure.buildDir", includes: ["jacoco/testDebugUnitTest.exec"])
+    def executionFiles = layout.files(executionFileFromUnitTestInApp,executionFileFromUnitTestInDomain,executionFileFromUnitTestInInfrastructure)
+    executionData.setFrom(executionFiles.asFileTree)
 }
 
 dependencies {
@@ -73,6 +116,14 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+
+    testImplementation coreTesting
+    testImplementation roboelectric
+    testImplementation mockito
+    testImplementation coroutinesTest
+
     //Dependency Injection
     api hiltDi
     kapt hiltCompiler
@@ -87,5 +138,17 @@ dependencies {
     // Coil
     implementation coil
     implementation accompanist
+
+    //todelete
+    //Room
+    implementation room
+    implementation roomRuntime
+    implementation 'androidx.test.ext:junit-ktx:1.1.3'
+    kapt  roomCompiler
+
+    implementation okhttp
+    implementation retrofit
+    implementation gson
+
 
 }

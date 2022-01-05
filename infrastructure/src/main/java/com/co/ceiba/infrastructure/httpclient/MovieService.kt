@@ -7,7 +7,7 @@ import retrofit2.http.Query
 private const val QUERY_MOVIES = "movie/now_playing"
 private const val QUERY_API_KEY = "api_key"
 private const val API_KEY = "14900d7797c47f6c10e4ddbb620a6ce9"
-interface IMovieService {
+interface MovieService {
 
     @GET(QUERY_MOVIES)
     suspend fun getAllMovies(

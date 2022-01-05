@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -26,18 +27,32 @@ import com.google.accompanist.coil.rememberCoilPainter
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.co.ceiba.movies.R
 import com.co.ceiba.movies.ui.widget.HomeAppBar
+import kotlinx.coroutines.launch
 
 @Composable
-fun MainScreen(navController: NavController, viewModel: MoviesViewModel = hiltViewModel()){
+fun MainScreen(
+    navigateToDescriptionScreen: (movieId: Int) -> Unit,
+    viewModel: MoviesViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
     Surface(Modifier.fillMaxSize()) {
-        HomeContent(loading = uiState.loading , movies = uiState.success , error = uiState.error, navController = navController)
+        HomeContent(
+            loading = uiState.loading,
+            movies = uiState.success,
+            error = uiState.error,
+            navigateToDescriptionScreen = navigateToDescriptionScreen
+        )
     }
 }
 
 
 @Composable
-fun HomeContent(movies :List<Movie>,navController: NavController, loading: Boolean, error: Boolean) {
+fun HomeContent(
+    movies: List<Movie>,
+    navigateToDescriptionScreen: (movieId: Int) -> Unit,
+    loading: Boolean,
+    error: Boolean
+) {
     Column {
 
         Column(
@@ -53,6 +68,7 @@ fun HomeContent(movies :List<Movie>,navController: NavController, loading: Boole
                         endY = 0f
                     )
                 )
+                .testTag("homeContent")
         ) {
             val appBarColor = MaterialTheme.colors.surface.copy(alpha = 0.87f)
 
@@ -67,35 +83,35 @@ fun HomeContent(movies :List<Movie>,navController: NavController, loading: Boole
                 modifier = Modifier.fillMaxWidth()
             )
 
-            if(loading){
+            if (loading) {
                 MovieListPreview()
-            }else{
-                if(error){
+            } else {
+                if (error) {
                     NoDataScreen()
-                }else{
-                    MovieList(movies = movies, navController = navController)
+                } else {
+                    MovieList(
+                        movies = movies,
+                        navigateToDescriptionScreen = navigateToDescriptionScreen
+                    )
                 }
             }
 
         }
-
-
     }
 }
 
 @Composable
 fun MovieCard(
     movie: Movie,
-    navController: NavController,
+    navigateToDescriptionScreen: (movieId: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(6.dp)
             .clickable {
-                navController.navigate("description_screen/${movie.id}")
+                navigateToDescriptionScreen.invoke(movie.id)
             },
         shape = RoundedCornerShape(15.dp),
         elevation = 5.dp,
@@ -105,34 +121,36 @@ fun MovieCard(
 
             Image(
                 painter = rememberCoilPainter(
-                    request = "https://image.tmdb.org/t/p/w500"+movie.backdrop_path,
+                    request = "https://image.tmdb.org/t/p/w500" + movie.backdrop_path,
                     previewPlaceholder = R.drawable.tree_logo
                 ),
                 contentDescription = movie.overview,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
-
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            Color.Black
-                        ),
-                        startY = 300f
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black
+                            ),
+                            startY = 300f
+                        )
                     )
-                )) {
+            ) {
 
             }
 
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(12.dp),
                 contentAlignment = Alignment.BottomStart
             ) {
-                Text(movie.title,style = TextStyle(color = Color.White,fontSize = 16.sp))
+                Text(movie.title, style = TextStyle(color = Color.White, fontSize = 16.sp))
             }
 
         }
@@ -145,14 +163,15 @@ fun MovieCard(
 @Composable
 fun MovieList(
     movies: List<Movie>,
-    navController: NavController
+    navigateToDescriptionScreen: (movieId: Int) -> Unit
 ) {
-    LazyColumn (
+    LazyColumn(
         contentPadding = PaddingValues(0.dp),
-        verticalArrangement = Arrangement.Center
-    ){
-        itemsIndexed(movies){
-                _, item -> MovieCard(movie = item, navController = navController)
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.testTag("movieList")
+    ) {
+        itemsIndexed(movies) { _, item ->
+            MovieCard(movie = item, navigateToDescriptionScreen)
         }
     }
 }

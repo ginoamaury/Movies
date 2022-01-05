@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,29 +31,40 @@ import com.google.accompanist.coil.rememberCoilPainter
 
 
 @Composable
-fun DescriptionScreen (navController: NavController, idMovie: Int?, movieViewModel: MovieViewModel = hiltViewModel()){
-    movieViewModel.getMovie(idMovie?:0)
+fun DescriptionScreen(
+    popBackStack: () -> Unit,
+    idMovie: Int?,
+    movieViewModel: MovieViewModel = hiltViewModel()
+) {
+    movieViewModel.getMovie(idMovie ?: 0)
     val uiState by movieViewModel.uiState.collectAsState()
     Surface(Modifier.fillMaxSize()) {
-        MovieDetailScreen(loading = uiState.loading , movie = uiState.success , error = uiState.error, navController = navController)
+        MovieDetailScreen(
+            loading = uiState.loading,
+            movie = uiState.success,
+            error = uiState.error,
+            popBackStack = popBackStack
+        )
     }
 }
 
 @Composable
 fun MovieDetailScreen(
-    movie : Movie?,
+    movie: Movie?,
     loading: Boolean,
     error: Boolean,
-    navController: NavController,
+    popBackStack: () -> Unit,
     topPadding: Dp = 20.dp,
     movieImageSize: Dp = 200.dp,
 ) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(bottom = 16.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 16.dp)
+            .testTag("movieDetailScreen")
     ) {
         MovieDetailTopSection(
-            navController = navController,
+            popBackStack = popBackStack,
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.2f)
@@ -85,13 +97,15 @@ fun MovieDetailScreen(
                     bottom = 16.dp
                 )
         )
-        Box(contentAlignment = Alignment.TopCenter,
+        Box(
+            contentAlignment = Alignment.TopCenter,
             modifier = Modifier
-                .fillMaxSize()) {
-            if(movie != null) {
+                .fillMaxSize()
+        ) {
+            if (movie != null) {
                 Image(
                     painter = rememberCoilPainter(
-                        request = "https://image.tmdb.org/t/p/w500"+movie.backdrop_path,
+                        request = "https://image.tmdb.org/t/p/w500" + movie.backdrop_path,
                         previewPlaceholder = R.drawable.tree_logo,
                     ),
                     contentDescription = movie.overview,
@@ -107,7 +121,7 @@ fun MovieDetailScreen(
 
 @Composable
 fun MovieDetailTopSection(
-    navController: NavController,
+    popBackStack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -130,7 +144,7 @@ fun MovieDetailTopSection(
                 .size(36.dp)
                 .offset(16.dp, 16.dp)
                 .clickable {
-                    navController.popBackStack()
+                    popBackStack.invoke()
                 }
         )
     }
@@ -138,13 +152,13 @@ fun MovieDetailTopSection(
 
 @Composable
 fun MovieDetailStateWrapper(
-    movie : Movie?,
+    movie: Movie?,
     modifier: Modifier = Modifier,
     loading: Boolean,
     error: Boolean,
     loadingModifier: Modifier = Modifier
 ) {
-    if(loading){
+    if (loading) {
         CircularProgressIndicator(
             color = MaterialTheme.colors.primary,
             modifier = loadingModifier

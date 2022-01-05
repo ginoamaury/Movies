@@ -3,11 +3,10 @@ package com.co.ceiba.movies.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.co.ceiba.domain.exceptions.NoDataMovie
+import com.co.ceiba.domain.exceptions.UnknownException
 import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.domain.services.MoviesService
 import com.co.ceiba.infrastructure.dependencyInjection.DefaultDispatcher
-import com.co.ceiba.infrastructure.dependencyInjection.IoDispatcher
-import com.co.ceiba.infrastructure.dependencyInjection.MainDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
@@ -20,9 +19,10 @@ class MoviesViewModel @Inject constructor(
     @DefaultDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val loading = MutableStateFlow(false)
+    private val loading = MutableStateFlow(MoviesUiState().loading)
     private val success = MutableStateFlow(MoviesUiState().success)
-    private val error = MutableStateFlow(false)
+    private val error = MutableStateFlow(MoviesUiState().error)
+    private val message = MutableStateFlow(MoviesUiState().message)
 
     private val _uiState = MutableStateFlow(MoviesUiState())
     val uiState: StateFlow<MoviesUiState> get() = _uiState
@@ -32,10 +32,10 @@ class MoviesViewModel @Inject constructor(
             combine(
                 loading,
                 success,
-                error
-            ){ loading, success, error ->
-                MoviesUiState (loading,success, error)
-
+                error,
+                message
+            ) { loading, success, error, message ->
+                MoviesUiState(loading, success, error, message)
             }.catch { throwable ->
                 throw throwable
             }.collect {
@@ -45,18 +45,20 @@ class MoviesViewModel @Inject constructor(
         getMovies()
     }
 
-    private fun getMovies (){
+    private fun getMovies() {
         viewModelScope.launch(ioDispatcher) {
             loading.value = true
-            try{
+            try {
                 moviesService.invoke().collect { movies ->
                     success.value = movies
                     loading.value = false
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 loading.value = false
+                if(e is NoDataMovie) message.value = "We haven't movies to show"
+                else if (e is UnknownException) message.value = "We are having problems, please try later"
                 error.value = true
-            } 
+            }
 
         }
     }
@@ -64,10 +66,11 @@ class MoviesViewModel @Inject constructor(
 }
 
 
-data class MoviesUiState (
+data class MoviesUiState(
     var loading: Boolean = false,
     var success: List<Movie> = emptyList(),
-    var error: Boolean = false
+    var error: Boolean = false,
+    var message: String = "All was good"
 )
 
 

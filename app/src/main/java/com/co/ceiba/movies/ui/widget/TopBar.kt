@@ -29,7 +29,7 @@ fun HomeAppBar(
     val scale = remember {
         Animatable(0f)
     }
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         scale.animateTo(
             targetValue = 1f,
             animationSpec = tween(
@@ -41,13 +41,13 @@ fun HomeAppBar(
         )
         delay(3000L)
     }
-    Box{
+    Box {
         TopAppBar(
             title = {
-                Row (verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(R.drawable.ceiba_logo),
-                        contentDescription = null,
+                        contentDescription = "topbarlogo",
                         Modifier
                             .padding(8.dp)
                             .fillMaxSize()

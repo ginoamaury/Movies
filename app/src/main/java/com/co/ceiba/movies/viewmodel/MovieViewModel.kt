@@ -3,6 +3,7 @@ package com.co.ceiba.movies.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.co.ceiba.domain.exceptions.NoDataMovie
+import com.co.ceiba.domain.exceptions.UnknownException
 import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.domain.services.MovieService
 import com.co.ceiba.infrastructure.dependencyInjection.IoDispatcher
@@ -18,9 +19,10 @@ class MovieViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val loading = MutableStateFlow(false)
+    private val loading = MutableStateFlow(MovieUiState().loading)
     private val success = MutableStateFlow(MovieUiState().success)
-    private val error = MutableStateFlow(false)
+    private val error = MutableStateFlow(MovieUiState().error)
+    private val message = MutableStateFlow(MovieUiState().message)
 
     private val _uiState = MutableStateFlow(MovieUiState())
     val uiState: StateFlow<MovieUiState> get() = _uiState
@@ -30,10 +32,10 @@ class MovieViewModel @Inject constructor(
             combine(
                 loading,
                 success,
-                error
-            ){ loading, success, error ->
-                MovieUiState (loading,success, error)
-
+                error,
+                message
+            ) { loading, success, error, message ->
+                MovieUiState(loading, success, error,message)
             }.catch { throwable ->
                 throw throwable
             }.collect {
@@ -52,6 +54,8 @@ class MovieViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 loading.value = false
+                if(e is NoDataMovie) message.value = "We haven't movies to show"
+                else if (e is UnknownException) message.value = "We are having problems, please try later"
                 error.value = true
             }
         }
@@ -60,8 +64,9 @@ class MovieViewModel @Inject constructor(
 }
 
 
-data class MovieUiState (
+data class MovieUiState(
     var loading: Boolean = false,
     var success: Movie? = null,
-    var error: Boolean = false
+    var error: Boolean = false,
+    var message: String = "All was good"
 )

@@ -14,7 +14,6 @@ const val LAST_UPDATED = "lastUpdate"
 @Module
 @InstallIn(SingletonComponent::class)
 class SharedPreferencesModule {
-
     @Singleton
     @Provides
     fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {

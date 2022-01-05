@@ -17,7 +17,7 @@ import com.co.ceiba.domain.models.Movie
 fun MovieAboutSection(
     movie: Movie,
     modifier: Modifier = Modifier
-){
+) {
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
@@ -29,7 +29,7 @@ fun MovieAboutSection(
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "${movie.overview}",
+            text = movie.overview,
             color = MaterialTheme.colors.onSurface,
             fontSize = 12.sp,
             textAlign = TextAlign.Justify

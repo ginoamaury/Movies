@@ -4,19 +4,16 @@ pipeline {
     label 'Slave_Mac'
   }
 
-
   options {
         buildDiscarder(logRotator(numToKeepStr: '3'))
      disableConcurrentBuilds()
   }
-
 
   tools {
     jdk 'JDK11_Mac' //Versión preinstalada en la Configuración del Master
   }
 
   stages{
-
 
     stage('Compile') {
       steps {
@@ -26,18 +23,17 @@ pipeline {
       }
     }
 
-    stage('Unit Tests') {
+    stage('Tests') {
       steps{
         echo "------------>Unit Tests<------------"
         sh './gradlew clean'
-        sh './gradlew test'
         sh './gradlew jacocoTestReport'
       }
     }
 
     stage('Static Code Analysis') {
       steps{
-        echo '------------>Análisis de código estático<------------'
+        echo '------------>Análisis estático de código<------------'
         withSonarQubeEnv('Sonar') {
         sh "${tool name: 'SonarScanner-Mac', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner"
         }

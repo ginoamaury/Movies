@@ -18,11 +18,11 @@ import com.co.ceiba.movies.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavController){
+fun SplashScreen(isLoading: (Boolean) -> Unit) {
     val scale = remember {
         Animatable(0f)
     }
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         scale.animateTo(
             targetValue = 1f,
             animationSpec = tween(
@@ -33,12 +33,12 @@ fun SplashScreen(navController: NavController){
             )
         )
         delay(3000L)
-        navController.navigate("main_screen")
+        isLoading.invoke(false)
     }
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
-    ){
+    ) {
         Image(
             painter = painterResource(id = R.drawable.tree_logo),
             contentDescription = "Logo",

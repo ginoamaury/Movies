@@ -25,5 +25,4 @@ class DatabaseModule {
     @Provides
     fun providesMovieDao (database: MoviesDatabase) : MovieDao = database.movieDao()
 
-
 }

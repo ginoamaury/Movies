@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -17,17 +18,24 @@ import com.co.ceiba.movies.R
 import java.util.*
 
 @Composable
-fun MovieTitleSection(movieInfo: Movie){
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+fun MovieTitleSection(movieInfo: Movie) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.testTag("titleSection")
+    ) {
         Text(
-            text = "${movieInfo.title.capitalize(Locale.ROOT)}",
+            text = movieInfo.title.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
             fontWeight = FontWeight.Bold,
             fontSize = 30.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.onSurface
         )
         Text(
-            text = "Release date ${movieInfo.release_date.capitalize(Locale.ROOT)}",
+            text = "Release date ${movieInfo.release_date.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.ROOT
+                ) else it.toString()
+            }}",
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp,
             textAlign = TextAlign.Center,
@@ -49,7 +57,8 @@ fun MovieVoteSection(
             painter = painterResource(id = R.drawable.star),
             modifier = modifier.size(15.dp),
             tint = MaterialTheme.colors.secondary,
-            contentDescription = null)
+            contentDescription = "iconStar"
+        )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = "Vote Average: ${movie.vote_average}",
@@ -61,7 +70,8 @@ fun MovieVoteSection(
             painter = painterResource(id = R.drawable.voting),
             modifier = modifier.size(15.dp),
             tint = MaterialTheme.colors.secondary,
-            contentDescription = null)
+            contentDescription = null
+        )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = "Total Votes: ${movie.vote_count}",

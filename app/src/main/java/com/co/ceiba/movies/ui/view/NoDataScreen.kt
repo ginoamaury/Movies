@@ -9,7 +9,7 @@ import androidx.compose.ui.res.painterResource
 import com.co.ceiba.movies.R
 
 @Composable
-fun NoDataScreen (){
+fun NoDataScreen() {
     val image: Painter = painterResource(id = R.drawable.nointernet)
-    Image(painter = image,contentDescription = "", modifier = Modifier.fillMaxSize())
+    Image(painter = image, contentDescription = "noData", modifier = Modifier.fillMaxSize())
 }

@@ -5,7 +5,7 @@ import com.co.ceiba.domain.repositories.MovieProxy
 import com.co.ceiba.domain.repositories.MovieLocalRepository
 import com.co.ceiba.domain.repositories.MovieTemporalRepository
 import com.co.ceiba.domain.repositories.MovieRemoteRepository
-import com.co.ceiba.infrastructure.httpclient.IMovieService
+import com.co.ceiba.infrastructure.httpclient.MovieService
 import com.co.ceiba.infrastructure.movie.persistence.dao.MovieDao
 import com.co.ceiba.infrastructure.movie.repositories.*
 import dagger.Module
@@ -30,7 +30,7 @@ class DataModule {
         MoviesRoomRepository(movieDao)
 
     @Provides
-    fun providesRemoteSource(moviesService: IMovieService): MovieRemoteRepository =
+    fun providesRemoteSource(moviesService: MovieService): MovieRemoteRepository =
         MoviesRetrofitRepository(moviesService)
 
     @Provides
