@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.co.ceiba.movies.R
 import kotlinx.coroutines.delay
 
@@ -40,7 +41,7 @@ fun SplashScreen(isLoading: (Boolean) -> Unit) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.tree_logo),
-            contentDescription = "Logo",
+            contentDescription = stringResource(id = R.string.logo_description),
             modifier = Modifier.scale(scale.value)
         )
     }

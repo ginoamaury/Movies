@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -21,7 +22,7 @@ import java.util.*
 fun MovieTitleSection(movieInfo: Movie) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.testTag("titleSection")
+        modifier = Modifier.testTag(stringResource(id = R.string.title_section_tag))
     ) {
         Text(
             text = movieInfo.title.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
@@ -31,7 +32,7 @@ fun MovieTitleSection(movieInfo: Movie) {
             color = MaterialTheme.colors.onSurface
         )
         Text(
-            text = "Release date ${movieInfo.releaseDate.replaceFirstChar {
+            text = "${stringResource(id = R.string.release_date)} ${movieInfo.releaseDate.replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
                     Locale.ROOT
                 ) else it.toString()
@@ -57,11 +58,11 @@ fun MovieVoteSection(
             painter = painterResource(id = R.drawable.star),
             modifier = modifier.size(15.dp),
             tint = MaterialTheme.colors.secondary,
-            contentDescription = "iconStar"
+            contentDescription = stringResource(id = R.string.icon_star_description)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "Vote Average: ${movie.voteAverage}",
+            text = "${stringResource(id = R.string.vote_average)}: ${movie.voteAverage}",
             color = MaterialTheme.colors.onSurface,
             fontSize = 12.sp,
         )
@@ -74,7 +75,7 @@ fun MovieVoteSection(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "Total Votes: ${movie.voteCount}",
+            text = "${stringResource(id = R.string.total_votes)}: ${movie.voteCount}",
             color = MaterialTheme.colors.onSurface,
             fontSize = 12.sp,
         )

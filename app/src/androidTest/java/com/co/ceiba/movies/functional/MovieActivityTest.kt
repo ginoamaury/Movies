@@ -7,13 +7,10 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import com.co.ceiba.movies.MainActivity
+import com.co.ceiba.movies.MovieActivity
 import com.co.ceiba.movies.MainPage
 import com.co.ceiba.movies.Navigation
 import com.co.ceiba.movies.ui.theme.MoviesTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,10 +19,10 @@ import kotlin.concurrent.schedule
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class MainActivityTest {
+class MovieActivityTest {
 
     @get:Rule
-    val composeTestRule = createAndroidComposeRule<MainActivity>(MainActivity::class.java)
+    val composeTestRule = createAndroidComposeRule<MovieActivity>(MovieActivity::class.java)
 
     @ExperimentalTestApi
     @Test

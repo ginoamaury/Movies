@@ -12,13 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.co.ceiba.movies.R
 
 
 @Composable
 fun MovieListPreview() {
     LazyColumn(
-        modifier = Modifier.testTag("ListColumn"),
+        modifier = Modifier.testTag(stringResource(id = R.string.list_column_tag)),
         contentPadding = PaddingValues(0.dp),
         verticalArrangement = Arrangement.Center
     ) {
@@ -28,7 +30,6 @@ fun MovieListPreview() {
     }
 }
 
-
 @Composable
 fun MovieCardPreview(
     modifier: Modifier = Modifier
@@ -37,13 +38,11 @@ fun MovieCardPreview(
         modifier = modifier
             .fillMaxWidth()
             .padding(6.dp)
-            .testTag("cardPreview"),
+            .testTag(stringResource(id = R.string.card_preview_tag)),
         shape = RoundedCornerShape(15.dp),
         elevation = 5.dp,
     ) {
-
         Box(modifier = Modifier.height(200.dp)) {
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -57,10 +56,7 @@ fun MovieCardPreview(
                         )
                     )
             ) {
-
-
             }
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -69,9 +65,6 @@ fun MovieCardPreview(
             ) {
                 CircularProgressIndicator()
             }
-
         }
-
     }
-
 }

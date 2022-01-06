@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.co.ceiba.movies.R
 import kotlinx.coroutines.delay
@@ -47,7 +48,7 @@ fun HomeAppBar(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(R.drawable.ceiba_logo),
-                        contentDescription = "topbarlogo",
+                        contentDescription = stringResource(id = R.string.top_bar_logo_description),
                         Modifier
                             .padding(8.dp)
                             .fillMaxSize()
@@ -60,5 +61,4 @@ fun HomeAppBar(
             modifier = modifier
         )
     }
-
 }

@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Movies</string>
+    <string name="resume_title">Resume</string>
+    <string name="icon_star_description">iconStar</string>
+    <string name="no_data_description">noData</string>
+    <string name="logo_description">Logo</string>
+    <string name="top_bar_logo_description">topbarlogo</string>
+    <string name="vote_average">Vote Average</string>
+    <string name="total_votes">Total Votes</string>
+    <string name="release_date">Release date</string>
+    <string name="title_section_tag">titleSection</string>
+    <string name="movie_detail_tag">movieDetailScreen</string>
+    <string name="home_content_tag">homeContent</string>
+    <string name="movie_list_tag">movieList</string>
+    <string name="list_column_tag">ListColumn</string>
+    <string name="card_preview_tag">cardPreview</string>
+    <string name="image_url_base">https://image.tmdb.org/t/p/w500</string>
 </resources>

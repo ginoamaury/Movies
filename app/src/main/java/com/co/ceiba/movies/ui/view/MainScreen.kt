@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,7 +42,6 @@ fun MainScreen(
     }
 }
 
-
 @Composable
 fun HomeContent(
     movies: List<Movie>,
@@ -50,7 +50,6 @@ fun HomeContent(
     error: Boolean
 ) {
     Column {
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -64,21 +63,18 @@ fun HomeContent(
                         endY = 0f
                     )
                 )
-                .testTag("homeContent")
+                .testTag(stringResource(id = R.string.home_content_tag))
         ) {
             val appBarColor = MaterialTheme.colors.surface.copy(alpha = 0.87f)
-
             Spacer(
                 Modifier
                     .background(appBarColor)
                     .fillMaxWidth()
             )
-
             HomeAppBar(
                 backgroundColor = appBarColor,
                 modifier = Modifier.fillMaxWidth()
             )
-
             if (loading) {
                 MovieListPreview()
             } else {
@@ -91,7 +87,6 @@ fun HomeContent(
                     )
                 }
             }
-
         }
     }
 }
@@ -112,12 +107,10 @@ fun MovieCard(
         shape = RoundedCornerShape(15.dp),
         elevation = 5.dp,
     ) {
-
         Box(modifier = Modifier.height(200.dp)) {
-
             Image(
                 painter = rememberCoilPainter(
-                    request = "https://image.tmdb.org/t/p/w500" + movie.backdropPath,
+                    request = stringResource(id = R.string.image_url_base) + movie.backdropPath,
                     previewPlaceholder = R.drawable.tree_logo
                 ),
                 contentDescription = movie.overview,
@@ -137,9 +130,7 @@ fun MovieCard(
                         )
                     )
             ) {
-
             }
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -148,13 +139,9 @@ fun MovieCard(
             ) {
                 Text(movie.title, style = TextStyle(color = Color.White, fontSize = 16.sp))
             }
-
         }
-
     }
-
 }
-
 
 @Composable
 fun MovieList(
@@ -164,7 +151,7 @@ fun MovieList(
     LazyColumn(
         contentPadding = PaddingValues(0.dp),
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.testTag("movieList")
+        modifier = Modifier.testTag(stringResource(id = R.string.movie_list_tag))
     ) {
         itemsIndexed(movies) { _, item ->
             MovieCard(movie = item, navigateToDescriptionScreen)

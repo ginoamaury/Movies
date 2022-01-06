@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,7 +28,6 @@ import com.co.ceiba.movies.ui.movie.MovieTitleSection
 import com.co.ceiba.movies.ui.movie.MovieVoteSection
 import com.co.ceiba.movies.viewmodel.MovieViewModel
 import com.google.accompanist.coil.rememberCoilPainter
-
 
 @Composable
 fun DescriptionScreen(
@@ -60,7 +60,7 @@ fun MovieDetailScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = 16.dp)
-            .testTag("movieDetailScreen")
+            .testTag(stringResource(id = R.string.movie_detail_tag))
     ) {
         MovieDetailTopSection(
             popBackStack = popBackStack,
@@ -104,7 +104,7 @@ fun MovieDetailScreen(
             if (movie != null) {
                 Image(
                     painter = rememberCoilPainter(
-                        request = "https://image.tmdb.org/t/p/w500" + movie.backdropPath,
+                        request = stringResource(id = R.string.image_url_base) + movie.backdropPath,
                         previewPlaceholder = R.drawable.tree_logo,
                     ),
                     contentDescription = movie.overview,
@@ -167,14 +167,11 @@ fun MovieDetailStateWrapper(
             NoDataScreen()
         } else {
             if (movie != null) {
-
                 MovieDetailSection(
                     movieInfo = movie,
                     modifier = modifier
                         .offset(y = (-20).dp)
                 )
-
-
             }
         }
     }

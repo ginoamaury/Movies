@@ -8,10 +8,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.co.ceiba.domain.models.Movie
+import com.co.ceiba.movies.R
 
 @Composable
 fun MovieAboutSection(
@@ -23,7 +25,7 @@ fun MovieAboutSection(
         modifier = modifier
     ) {
         Text(
-            text = "Resume",
+            text = stringResource(id = R.string.resume_title),
             color = MaterialTheme.colors.onSurface,
             textAlign = TextAlign.Left
         )

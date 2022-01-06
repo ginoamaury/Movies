@@ -55,8 +55,8 @@ class MoviesViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 loading.value = false
-                if(e is NoDataMovieException) message.value = "We haven't movies to show"
-                else if (e is TechnicalException) message.value = "We are having problems, please try later"
+                if(e is NoDataMovieException) message.value = e.message.toString()
+                else if (e is TechnicalException) message.value = e.message.toString()
                 error.value = true
             }
 
