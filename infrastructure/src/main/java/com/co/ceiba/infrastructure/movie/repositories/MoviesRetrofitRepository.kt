@@ -1,6 +1,6 @@
 package com.co.ceiba.infrastructure.movie.repositories
 
-import com.co.ceiba.domain.exceptions.NoDataMovie
+import com.co.ceiba.domain.exceptions.NoDataMovieException
 import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.domain.repositories.MovieRemoteRepository
 import com.co.ceiba.infrastructure.httpclient.MovieService
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 class MoviesRetrofitRepository(private val movieService: MovieService) : MovieRemoteRepository {
     override fun getMovies(): Flow<List<Movie>> {
         return flow { emit(movieService.getAllMovies()) }.catch {
-            throw NoDataMovie()
+            throw NoDataMovieException()
         }.map {
             MovieTranslate.mapMoviesDtoToDomain(it)
         }

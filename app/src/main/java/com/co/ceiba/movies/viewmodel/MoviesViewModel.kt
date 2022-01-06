@@ -2,8 +2,8 @@ package com.co.ceiba.movies.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.co.ceiba.domain.exceptions.NoDataMovie
-import com.co.ceiba.domain.exceptions.UnknownException
+import com.co.ceiba.domain.exceptions.NoDataMovieException
+import com.co.ceiba.domain.exceptions.TechnicalException
 import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.domain.services.MoviesService
 import com.co.ceiba.infrastructure.dependencyInjection.DefaultDispatcher
@@ -55,8 +55,8 @@ class MoviesViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 loading.value = false
-                if(e is NoDataMovie) message.value = "We haven't movies to show"
-                else if (e is UnknownException) message.value = "We are having problems, please try later"
+                if(e is NoDataMovieException) message.value = "We haven't movies to show"
+                else if (e is TechnicalException) message.value = "We are having problems, please try later"
                 error.value = true
             }
 
