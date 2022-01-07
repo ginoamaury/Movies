@@ -45,7 +45,7 @@ class MoviesViewModel @Inject constructor(
         getMovies()
     }
 
-    private fun getMovies() {
+    fun getMovies() {
         viewModelScope.launch(ioDispatcher) {
             loading.value = true
             try {

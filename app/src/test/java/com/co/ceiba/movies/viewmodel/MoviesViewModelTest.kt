@@ -2,12 +2,10 @@ package com.co.ceiba.movies.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.co.ceiba.domain.builder.Builder
-import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.domain.services.MoviesService
 import com.co.ceiba.movies.CoroutineTestRule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -24,7 +22,6 @@ class MoviesViewModelTest {
     @get: Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    @ExperimentalCoroutinesApi
     @get: Rule
     var coroutineTestRule = CoroutineTestRule()
 
@@ -34,18 +31,40 @@ class MoviesViewModelTest {
     private lateinit var moviesViewModel: MoviesViewModel
 
 
-    @ExperimentalCoroutinesApi
     @Before
     fun start(){
         moviesViewModel = MoviesViewModel(moviesService = moviesService,coroutineTestRule.testDispatcher)
     }
 
     @Test
-    fun getMovies_whenGetMovies_okResponse() {
+    fun getMovies_whenMoviesServicesWasCalled_okResponse() {
         runBlocking {
             Mockito.verify(moviesService,Mockito.times(1)).invoke()
         }
     }
 
+    @Test
+    fun getMovies_whenGetMovies_exceptionResponse(){
+        runBlocking {
+            //Arrange
+            Mockito.`when`(moviesService.invoke()).thenReturn(null)
+            //Act
+            moviesViewModel.getMovies()
+            //Assert
+            Assert.assertTrue(moviesViewModel.uiState.value.error)
+        }
+    }
+
+    @Test
+    fun getMovies_whenGetMovies_okResponse(){
+        runBlocking {
+            //Arrange
+            Mockito.`when`(moviesService.invoke()).thenReturn(Builder.getFlowListMovie())
+            //Act
+            moviesViewModel.getMovies()
+            //Assert
+            Assert.assertEquals(moviesViewModel.uiState.value.success[0].title, Builder.getMovie().title)
+        }
+    }
 
 }

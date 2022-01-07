@@ -4,8 +4,6 @@ import com.co.ceiba.domain.builder.Builder
 import com.co.ceiba.domain.models.Movie
 import com.co.ceiba.domain.repositories.MovieProxy
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test

@@ -8,6 +8,7 @@ import com.co.ceiba.movies.CoroutineTestRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -55,6 +56,19 @@ class MovieViewModelTest {
             movieViewModel.getMovie(idMovie)
             //Assert
             Mockito.verify(movieService, Mockito.times(1)).invoke(idMovie)
+        }
+    }
+
+    @Test
+    fun getMovie_whenGetMovie_exceptionResponse(){
+        runBlocking {
+            //Arrange
+            val idMovie = 123456
+            Mockito.`when`(movieService.invoke(idMovie)).thenReturn(null)
+            //Act
+            movieViewModel.getMovie(idMovie)
+            //Assert
+            Assert.assertTrue(movieViewModel.uiState.value.error)
         }
     }
 
