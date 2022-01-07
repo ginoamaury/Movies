@@ -74,17 +74,21 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['connectedAndroidTest','te
 
     //Filters
     def fileFilterInfrastructure = ['**/dependencyInjection/*','**/movie/httpclient/dto/*','**/movie/persistence/entity/*','**/movie/anticorruption/*']
+    def fileFilterApp = ['**/ui/theme/*']
+    def fileFilterDomain = ['**/domain/exceptions/*']
 
     //Source directories and define general source
-    def sourceDirectoriesFromApp = fileTree(dir: "${project.projectDir}/src/main/java")
+    def sourceDirectoriesFromApp = fileTree(dir: "${project.projectDir}/src/main/java", excludes: fileFilterApp)
     def sourceDirectoriesFromInfrastructure = fileTree(dir: "${infrastructure.projectDir}/src/main/java", excludes: fileFilterInfrastructure)
-    def sourceDirectoriesFromAllModules = layout.files(sourceDirectoriesFromApp,"${domain.projectDir}/src/main/java",sourceDirectoriesFromInfrastructure)
+    def sourceDirectoriesFromDomain = fileTree(dir: "${domain.projectDir}/src/main/java", excludes: fileFilterDomain)
+    def sourceDirectoriesFromAllModules = layout.files(sourceDirectoriesFromApp,sourceDirectoriesFromDomain,sourceDirectoriesFromInfrastructure)
     sourceDirectories.setFrom(files([sourceDirectoriesFromAllModules]))
 
     //Class directories and define general directories
-    def classDirectoriesFromApp = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug")
+    def classDirectoriesFromApp = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilterApp)
     def classDirectoriesFromInfrastructure = fileTree(dir: "${infrastructure.buildDir}/tmp/kotlin-classes/debug", excludes: fileFilterInfrastructure)
-    def classDirectoriesFromAllModules = layout.files(classDirectoriesFromApp,"${domain.buildDir}/tmp/kotlin-classes/debug",classDirectoriesFromInfrastructure)
+    def classDirectoriesFromDomain = fileTree(dir: "${domain.buildDir}/tmp/kotlin-classes/debug", excludes: fileFilterDomain)
+    def classDirectoriesFromAllModules = layout.files(classDirectoriesFromApp,classDirectoriesFromDomain,classDirectoriesFromInfrastructure)
     classDirectories.setFrom(files([classDirectoriesFromAllModules]))
 
     //Execution files from test task
